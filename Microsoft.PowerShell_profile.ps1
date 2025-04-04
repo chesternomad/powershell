@@ -1,17 +1,18 @@
 
-#Import-Module "C:\Users\adm-chyeung3\Downloads\Powershell\get-remotesession.psm1"
-#Import-Module "C:\Users\C.YEUNG\OneDrive - Zurich APAC\Documents\work\powershell\remoteCopy.psm1"
-#Import-Module "C:\Users\adm-chyeung3\Documents\WindowsPowerShell\Modules\get-adm\get-adm.psm1"
-oh-my-posh init pwsh --config 'C:\Users\adm-chyeung3\AppData\Local\Programs\oh-my-posh\themes\quick-term.omp.json' | Invoke-Expression
+#Import-Module "C:\Users\username\Downloads\Powershell\get-remotesession.psm1"
+#Import-Module "C:\Users\username\OneDrive - Zurich APAC\Documents\work\powershell\remoteCopy.psm1"
+#Import-Module "C:\Users\username\Documents\WindowsPowerShell\Modules\get-adm\get-adm.psm1"
+oh-my-posh init pwsh --config 'C:\Users\username\AppData\Local\Programs\oh-my-posh\themes\quick-term.omp.json' | Invoke-Expression
 Import-Module Terminal-Icons
 Set-Alias pop Pop-Location
 Set-Alias push push-location
-Set-Alias drive set-location
+Set-Alias drive Set-Location
 Set-Alias g git
 
-New-PSDrive -name "P" -root "\\HKWFSR103\jpfs296_fslogix_profile$" -persist -psprovider filesystem -erroraction silentlycontinue
-New-PSDrive -name "K" -root "\\hkwfsp103\jpfs196_fslogix_profile$" -persist -psprovider filesystem -erroraction silentlycontinue
-$global:driveMapping = import-excel -Path "C:\Users\C.YEUNG\OneDrive - Zurich APAC\Documents\work\DriveMappings.xlsx" -WorksheetName "DataForPowershell"
+New-PSDrive -name "P" -root "\\serverA\driveA$" -persist -psprovider filesystem -erroraction silentlycontinue
+New-PSDrive -name "K" -root "\\serverB\driveB$" -persist -psprovider filesystem -erroraction silentlycontinue
+
+$global:driveMapping = import-excel -Path "C:\Users\username\OneDrive - Zurich APAC\Documents\work\DriveMappings.xlsx" -WorksheetName "DataForPowershell"
 
 
 if ($host.name -match "consolehost") {
@@ -42,7 +43,7 @@ function get-currentdate {
 function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
 function ll { Get-ChildItem -Path . -Force -Hidden | Format-Table -AutoSize }
 
-Set-Location "C:\Users\C.YEUNG\OneDrive - Zurich APAC\Documents\work\powershell" -ErrorAction SilentlyContinue
+Set-Location "C:\Users\username\OneDrive - Zurich APAC\Documents\work\powershell" -ErrorAction SilentlyContinue
 
 function touch($file) { "" | Out-File $file -Encoding ASCII }
 
@@ -106,7 +107,7 @@ function grep-ADUser {
     [Parameter(Mandatory=$true, Position=0)]
     [string]$user
     )
-    Get-ADUser -server 'zurich.com' -Identity $user -Properties *  |Select-Object -Property @{Name= "ADNAME";Expression={$_.SamAccountName}},@{Name="PasswordExpiryDate";Expression={[DateTime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}},passwordlastset, whencreated, LockedOut, lastlogondate, sid,company,enabled
+    Get-ADUser -server 'ADServer' -Identity $user -Properties *  |Select-Object -Property @{Name= "ADNAME";Expression={$_.SamAccountName}},@{Name="PasswordExpiryDate";Expression={[DateTime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}},passwordlastset, whencreated, LockedOut, lastlogondate, sid,company,enabled
 
 }
 
@@ -115,7 +116,7 @@ function grep-JADUser {
     [Parameter(Mandatory=$true, Position=0)]
     [string]$user
     )
-    Get-ADUser -server 'jp.zurich.com' -Identity $user -Properties *  |Select-Object -Property @{Name= "ADNAME";Expression={$_.SamAccountName}},@{Name="PasswordExpiryDate";Expression={[DateTime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}},passwordlastset, whencreated, LockedOut, lastlogondate, sid,company,enabled
+    Get-ADUser -server 'jp.ADServer' -Identity $user -Properties *  |Select-Object -Property @{Name= "ADNAME";Expression={$_.SamAccountName}},@{Name="PasswordExpiryDate";Expression={[DateTime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}},passwordlastset, whencreated, LockedOut, lastlogondate, sid,company,enabled
 
 }
 
@@ -211,7 +212,7 @@ function Get-UserDevices {
    )
    $target = $target.Trim().Replace("`n", "")
    $givenname, $surname = $target -split "[.\s]"
-   $user = Get-ADUser -Server 'zurich.com' -Filter {
+   $user = Get-ADUser -Server 'ADServer' -Filter {
        givenname -like $givenname -and
        surname -like $surname -and
        name -notlike "adm-*"
