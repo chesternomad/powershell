@@ -1,6 +1,18 @@
 ﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
 
+;^=Control
+;+=Shift
+;!=Alt
+;#=Win
+
+
+;#:*:eee::chesteryeung2008@gmail.com
+;#w::Run "C:\users\" A_Username "\Downloads"
+;#e::Run "exe path"
+;#h::Run A_ProgramFiles "\autohotkey\v2\autohotkey.chm"
+;+^,::Send A_DD '/' A_MM '/' A_YYYY
+
 HotIfWinActive "ahk_exe powershell_ise.exe"
 ^5::{
     A_Clipboard := "restart-computer -force"
