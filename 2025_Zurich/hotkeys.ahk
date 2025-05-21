@@ -13,7 +13,56 @@
 ;#h::Run A_ProgramFiles "\autohotkey\v2\autohotkey.chm"
 ;+^,::Send A_DD '/' A_MM '/' A_YYYY
 
-HotIfWinActive "ahk_exe powershell_ise.exe"
+/*
+#hotif
+xbutton2 & q::{
+If WinExist("ahk_exe Obsidian.exe")
+WinActivate("ahk_exe Obsidian.exe")
+Else
+Run "C: \Users\Daniel\AppData\Local\Obsidian\Obsidian.exe"
+}
+xbutton2 & w::{
+If WinExist("ahk_exe chrome.exe")
+WinActivate("ahk_exe chrome.exe")
+Else
+Run "chrome"
+}
+xbutton2 & e: :{
+If WinExist("ahk_exe Code.exe")
+WinActivate("ahk_exe Code.exe")
+Else
+Run "C:\Users\Daniel\AppData\Local\Programs\Microsoft VS Code\Code
+xbutton2 & r::{
+If WinExist("ahk_exe resolve.exe")
+WinActivate("ahk_exe resolve.exe")
+Else
+Run "C: \Program Files\Blackmagic Design\DaVinci Resolve\Resolve.exe
+}
+
+
+
+
+/*
+#HotIf WinActive("ahk_exe Acrobat.exe")
+w:: {
+MouseClick "left"
+MouseClick "left"
+A_Clipboard := ""
+Send "^c"
+ClipWait 1
+WinActivate("ahk_exe EXCEL.EXE")
+WinWaitActive("ahk_exe EXCEL.EXE")
+Send "Av"
+Sleep 100
+Send "{Down}"
+WinActivate("ahk_exe Acrobat.exe")
+WinWaitActive("ahk_exe Acrobat.exe")
+Send "AW"
+}
+*/
+
+
+
 ^5::{
     A_Clipboard := "restart-computer -force"
     
